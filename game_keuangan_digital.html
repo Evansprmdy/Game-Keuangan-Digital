@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Misi Cerdas Keuangan Digital</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#102a43,#176b87);color:#102a43;min-height:100vh;display:grid;place-items:center;padding:20px}
+.card{background:#fff;max-width:720px;width:100%;border-radius:22px;padding:28px;box-shadow:0 18px 55px #001b2e66}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.tag{background:#e4f5f5;color:#087e8b;padding:8px 12px;border-radius:20px;font-weight:bold;font-size:13px}
+h1{margin:14px 0 8px;font-size:30px;color:#12344d}.sub{color:#557080;line-height:1.5}.stats{display:flex;gap:10px;margin:20px 0}.stat{background:#f0f6f9;padding:12px 16px;border-radius:12px;flex:1}.stat b{display:block;font-size:20px;color:#087e8b}
+.progress{height:9px;background:#e8eef2;border-radius:9px;overflow:hidden;margin:18px 0}.bar{height:100%;background:#12a6a6;width:0%;transition:.3s}
+h2{font-size:21px;line-height:1.4}.answers{display:grid;gap:10px;margin:18px 0}.answers button,.mainbtn{border:2px solid #d9e5eb;background:#fff;padding:14px 16px;border-radius:12px;text-align:left;font-size:16px;cursor:pointer;color:#183b50}.answers button:hover{border-color:#0c9a9a;background:#f1fbfb}.answers button:disabled{cursor:default}.answers button.correct{background:#e7f8ee;border-color:#27a45b}.answers button.wrong{background:#fff0ee;border-color:#d45b4b}
+.feedback{min-height:28px;font-weight:bold;margin:10px 0;color:#176b48}.mainbtn{background:#087e8b;color:white;border:0;text-align:center;font-weight:bold;padding:14px 22px}.mainbtn:hover{background:#066875}.hidden{display:none}.small{font-size:13px;color:#68808d;margin-top:18px}
+</style></head>
+<body><main class="card">
+<div class="top"><span class="tag">🎮 GAME EDUKASI • GRATIS</span><span class="tag">10 pertanyaan</span></div>
+<h1>💳 Misi Cerdas Keuangan Digital</h1>
+<p class="sub">Jawab pertanyaan, kumpulkan poin, dan jadilah pengguna layanan keuangan digital yang cerdas dan aman!</p>
+<div class="stats"><div class="stat">Skor<b id="score">0</b></div><div class="stat">Pertanyaan<b id="count">0/10</b></div><div class="stat">Nyawa<b id="lives">❤️❤️❤️</b></div></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<section id="game"><h2 id="question">Siap memulai misi?</h2><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><button class="mainbtn" id="start">Mulai Permainan</button><button class="mainbtn hidden" id="next">Pertanyaan Berikutnya</button></section>
+<section id="result" class="hidden"><h2 id="resultTitle">Misi selesai!</h2><p id="resultText" class="sub"></p><button class="mainbtn" onclick="restart()">Main Lagi</button></section>
+<p class="small">Tips: Jangan pernah membagikan PIN, kata sandi, atau kode OTP kepada siapa pun.</p>
+</main>
+<script>
+const qs=[
+["Apa yang dimaksud layanan keuangan digital?",["Layanan transaksi uang melalui teknologi digital","Tempat menyimpan uang di bawah kasur","Pembayaran hanya dengan uang kertas"],0,"Layanan keuangan digital menggunakan aplikasi atau internet untuk transaksi dan pengelolaan uang."],
+["Manakah contoh dompet digital (e-wallet)?",["Buku tabungan kertas","Aplikasi dompet elektronik","Uang logam"],1,"E-wallet adalah dompet elektronik untuk menyimpan nilai uang dan melakukan pembayaran."],
+["Apa keuntungan utama pembayaran digital?",["Selalu bebas risiko","Transaksi lebih praktis dan cepat","Tidak membutuhkan keamanan"],1,"Pembayaran digital memudahkan transaksi, tetapi tetap perlu dilakukan dengan aman."],
+["Pesan meminta PIN dan kode OTP melalui tautan asing. Apa tindakan tepat?",["Segera kirim datanya","Teruskan ke teman","Jangan klik atau berikan data; cek kanal resmi"],2,"PIN dan OTP bersifat rahasia. Jangan berikan kepada orang lain."],
+["Mengapa perlu memeriksa riwayat transaksi?",["Agar mengetahui pemasukan dan pengeluaran","Agar saldo otomatis bertambah","Supaya tidak perlu membuat anggaran"],0,"Riwayat transaksi membantu memantau penggunaan uang dan mendeteksi transaksi yang tidak dikenal."],
+["Apa langkah awal mengelola keuangan digital?",["Belanja saat ada promo","Membuat anggaran pemasukan dan pengeluaran","Mengabaikan saldo"],1,"Anggaran membantu mengatur uang dan menentukan prioritas kebutuhan."],
+["Bagaimana cara menjaga akun keuangan digital?",["Memakai PIN yang mudah ditebak","Membagikan kata sandi kepada teman","Menggunakan PIN kuat dan merahasiakannya"],2,"Gunakan pengamanan yang kuat dan jangan membagikan PIN atau kata sandi."],
+["Apa arti literasi digital dalam keuangan?",["Kemampuan menggunakan teknologi secara bijak dan aman","Kemampuan bermain gim saja","Menggunakan semua aplikasi tanpa memeriksa"],0,"Literasi digital membantu pengguna menilai informasi, menjaga data, dan memilih layanan tepercaya."],
+["Saat menerima tawaran hadiah yang meminta data rekening, sebaiknya…",["Langsung mengisi semua data","Memeriksa kebenaran melalui sumber resmi","Mengirim kode OTP"],1,"Waspadai tawaran mencurigakan dan verifikasi melalui kanal resmi."],
+["Mengapa perlu membatasi pengeluaran di aplikasi?",["Agar bisa mengabaikan kebutuhan","Agar tidak perlu menabung","Agar pengeluaran tetap sesuai anggaran"],2,"Kemudahan transaksi dapat mendorong belanja berlebihan, sehingga batas anggaran penting."]
+];
+let i=0,score=0,lives=3,started=false,answered=false;
+const $=id=>document.getElementById(id);
+function update(){ $("score").textContent=score; $("count").textContent=i+"/10"; $("lives").textContent="❤️".repeat(lives)+"🖤".repeat(3-lives); $("bar").style.width=(i/10*100)+"%";}
+function begin(){started=true;$("start").classList.add("hidden");show();}
+function show(){answered=false;update();$("question").textContent=(i+1)+". "+qs[i][0];$("answers").innerHTML="";$("feedback").textContent="";qs[i][1].forEach((a,n)=>{let b=document.createElement("button");b.textContent=String.fromCharCode(65+n)+". "+a;b.onclick=()=>choose(n,b);$("answers").appendChild(b)});}
+function choose(n,btn){if(answered)return;answered=true;let correct=qs[i][2];[...$("answers").children].forEach((b,k)=>{b.disabled=true;if(k===correct)b.classList.add("correct")});if(n===correct){score+=10;$("feedback").textContent="Benar! +10 poin. "+qs[i][3];$("feedback").style.color="#176b48"}else{lives=Math.max(0,lives-1);btn.classList.add("wrong");$("feedback").textContent="Belum tepat. "+qs[i][3];$("feedback").style.color="#b34336"}update();$("next").classList.remove("hidden");}
+function next(){i++;$("next").classList.add("hidden");if(i>=10||lives===0){finish();return}show();}
+function finish(){$("game").classList.add("hidden");$("result").classList.remove("hidden");$("bar").style.width=(i/10*100)+"%";$("resultTitle").textContent=score>=80?"🏆 Hebat! Kamu Juara Keuangan Digital!":"Misi selesai!";$("resultText").textContent="Skor akhir: "+score+" dari 100. "+(score>=80?"Kamu sudah memahami dasar keuangan digital.":"Pelajari kembali ringkasan materi, lalu coba lagi agar semakin paham.");}
+function restart(){i=0;score=0;lives=3;$("result").classList.add("hidden");$("game").classList.remove("hidden");$("next").classList.add("hidden");begin();}
+$("start").onclick=begin;$("next").onclick=next;
+</script></body></html>
